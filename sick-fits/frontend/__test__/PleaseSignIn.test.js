@@ -28,8 +28,6 @@ describe("<PleaseSignIn />", () => {
     const pleaseSignIn = wrapper.find("PleaseSignIn");
     expect(pleaseSignIn.contains(<Signin />)).toBeTruthy();
     expect(pleaseSignIn.text()).not.toContain("Secret");
-    console.log(toJSON(pleaseSignIn));
-    // expect(toJSON(pleaseSignIn)).toMatchSnapshot();
   });
 
   it("should render the children if signed in", async () => {
@@ -51,6 +49,5 @@ describe("<PleaseSignIn />", () => {
     const pleaseSignIn = wrapper.find("PleaseSignIn");
     expect(pleaseSignIn.contains(<Signin />)).toBeFalsy();
     expect(pleaseSignIn.text()).toEqual("Secret");
-    // expect(toJSON(pleaseSignIn)).toMatchSnapshot();
   });
 });
