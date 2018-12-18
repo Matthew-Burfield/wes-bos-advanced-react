@@ -1,10 +1,10 @@
 import { mount } from "enzyme";
 import toJSON from "enzyme-to-json";
+import { MockedProvider } from "react-apollo/test-utils";
 import wait from "waait";
 import PleaseSignIn from "../components/PleaseSignIn";
 import Signin from "../components/Signin";
 import { CURRENT_USER_QUERY } from "../components/User";
-import { MockedProvider } from "react-apollo/test-utils";
 import { fakeUser } from "../lib/testUtils";
 
 describe("<PleaseSignIn />", () => {

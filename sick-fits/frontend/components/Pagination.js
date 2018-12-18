@@ -63,3 +63,4 @@ const Pagination = props => (
 );
 
 export default Pagination;
+export { PAGINATION_ITEMS_QUERY };

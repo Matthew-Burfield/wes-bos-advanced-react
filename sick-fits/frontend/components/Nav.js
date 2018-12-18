@@ -6,7 +6,7 @@ import Signout from "./Signout";
 import CartCount from "./CartCount";
 
 const Nav = ({ currentUser }) => (
-  <NavStyles data-test="nav-1">
+  <NavStyles data-test="nav">
     {currentUser && (
       <React.Fragment>
         <Link href="/items">

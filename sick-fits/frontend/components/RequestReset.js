@@ -64,4 +64,5 @@ class Signin extends Component {
   }
 }
 
+export { REQUEST_RESET_MUTATION };
 export default Signin;
