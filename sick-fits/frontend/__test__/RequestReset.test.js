@@ -1,47 +1,50 @@
 import { mount } from "enzyme";
 import toJSON from "enzyme-to-json";
 import wait from "waait";
-import SingleItem, { SINGLE_ITEM_QUERY } from "../components/SingleItem";
+import RequestReset, {
+  REQUEST_RESET_MUTATION
+} from "../components/RequestReset";
 import { MockedProvider } from "react-apollo/test-utils";
-import { fakeItem } from "../lib/testUtils";
 
-describe("<SingleItem />", () => {
-  it("renders with proper data", async () => {
-    const mocks = [
-      {
-        request: { query: SINGLE_ITEM_QUERY, variables: { id: "123" } },
-        result: { data: { item: fakeItem() } }
-      }
-    ];
+const mocks = [
+  {
+    request: {
+      query: REQUEST_RESET_MUTATION,
+      variables: { email: "burfie@hotmail.com" }
+    },
+    result: {
+      data: { requestReset: { message: "success", __typename: "Message" } }
+    }
+  }
+];
+
+describe("<RequestReset />", () => {
+  it("should render", () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
-        <SingleItem id="123" />
+        <RequestReset />
       </MockedProvider>
     );
-    expect(wrapper.text()).toEqual("Loading...");
-    await wait();
-    wrapper.update();
-    expect(toJSON(wrapper.find("h2"))).toMatchSnapshot();
-    expect(toJSON(wrapper.find("img"))).toMatchSnapshot();
-    expect(toJSON(wrapper.find("p"))).toMatchSnapshot();
+    const form = wrapper.find("form[data-test='form']");
+    expect(toJSON(form)).toMatchSnapshot();
   });
 
-  it("should error with a not found item", async () => {
-    const mocks = [
-      {
-        request: { query: SINGLE_ITEM_QUERY, variables: { id: "123" } },
-        result: { errors: [{ message: "Items not found!" }] }
-      }
-    ];
+  it("should call the mutation", async () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
-        <SingleItem id="123" />
+        <RequestReset />
       </MockedProvider>
     );
+    // simulate typing an email
+    wrapper.find("input").simulate("change", {
+      target: { name: "email", value: "burfie@hotmail.com" }
+    });
+    wrapper.find("form").simulate("submit");
+    await wait();
     await wait();
     wrapper.update();
-    const error = wrapper.find('[data-test="graphql-error"]');
-    expect(error.text()).toContain("Items not found!");
-    expect(toJSON(error)).toMatchSnapshot();
+    expect(wrapper.find("p").text()).toEqual(
+      "Success! Check your email to change your password"
+    );
   });
 });
