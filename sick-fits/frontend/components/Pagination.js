@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { perPage, tabTitle } from "../config";
 import PaginationStyles from "./styles/PaginationStyles";
+import Error from "./ErrorMessage";
 
 const PAGINATION_ITEMS_QUERY = gql`
   query PAGINATION_ITEMS_QUERY {
@@ -20,11 +21,11 @@ const Pagination = props => (
   <Query query={PAGINATION_ITEMS_QUERY}>
     {({ data, error, loading }) => {
       if (error) return <Error error={error} />;
-      if (loading) return <p>Loading....</p>;
+      if (loading) return <p>Loading...</p>;
       const itemCount = data.itemsConnection.aggregate.count;
       const totalPages = Math.ceil(itemCount / perPage);
       return (
-        <PaginationStyles>
+        <PaginationStyles data-test="pagination">
           <Head>
             <title>
               {tabTitle} - page {props.page} of {totalPages}
@@ -42,7 +43,8 @@ const Pagination = props => (
             </a>
           </Link>
           <p>
-            Page {props.page} of {totalPages}
+            Page {props.page} of{" "}
+            <span className="totalPages">{totalPages}</span>
           </p>
           <p>{itemCount} items total</p>
           <Link
